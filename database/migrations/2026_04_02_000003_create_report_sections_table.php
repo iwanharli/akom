@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('report_sections', function (Blueprint $table) {
+        Schema::create('t_report_sections', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('report_id')->constrained('reports')->onDelete('cascade');
+            $table->foreignId('report_id')->constrained('t_reports')->onDelete('cascade');
             $table->integer('section_num');
             $table->string('title');
             $table->string('badge_text')->nullable();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('report_sections');
+        Schema::dropIfExists('t_report_sections');
     }
 };

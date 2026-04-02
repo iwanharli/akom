@@ -2,6 +2,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ReportForm from './Partials/ReportForm.vue';
 import { Head } from '@inertiajs/vue3';
+
+const props = defineProps({
+    clients: Array
+});
 </script>
 
 <template>
@@ -9,14 +13,17 @@ import { Head } from '@inertiajs/vue3';
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-bold leading-tight text-slate-800 dark:text-slate-100">
-                Create New Intelligence Report
-            </h2>
+            <div class="dashboard-header">
+                <div>
+                    <h2 class="page-title">Create Intelligence Report</h2>
+                    <p class="page-subtitle">Draft a new secure intelligence brief</p>
+                </div>
+            </div>
         </template>
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <ReportForm />
+                <ReportForm :clients="clients" />
             </div>
         </div>
     </AuthenticatedLayout>

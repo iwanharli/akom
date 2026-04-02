@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ChartData extends Model
 {
+    protected $table = 't_chart_data';
     protected $fillable = [
         'section_id', 'chart_type', 'json_payload'
     ];

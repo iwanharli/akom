@@ -1,3 +1,94 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --bg-primary: #080a0e;
+        --bg-secondary: #0d1117;
+        --bg-tertiary: #151b23;
+        --bg-elevated: #1c2333;
+        --border: #21283b;
+        --border-subtle: #171d2b;
+        --accent: #c9a227;
+        --accent-glow: rgba(201, 162, 39, 0.15);
+        --accent-hover: #ddb832;
+        --text-primary: #e6edf3;
+        --text-secondary: #8b949e;
+        --text-muted: #484f58;
+        --danger: #f85149;
+        --success: #3fb950;
+        --radius: 8px;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* Global Form Reset for Premium Theme */
+    select.form-select,
+    select.p-input {
+        background-color: var(--bg-tertiary);
+        border: 1px solid var(--border);
+        color: var(--text-primary);
+        border-radius: 8px;
+        padding: 10px;
+        outline: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%238b949e' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 12px center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+        transition: all 0.2s;
+    }
+    
+    select.form-select:focus,
+    select.p-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    /* ─── SWEETALERT2 PREMIUM DARK THEME ─── */
+    .swal2-popup.premium-popup {
+        border-radius: 16px !important;
+        border: 1px solid var(--border) !important;
+        background: var(--bg-elevated) !important;
+        box-shadow: 0 16px 48px rgba(0,0,0,0.6) !important;
+        backdrop-filter: blur(12px) !important;
+    }
+    .swal2-title.premium-title {
+        color: var(--text-primary) !important;
+        font-family: inherit !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.5px !important;
+    }
+    .swal2-confirm.premium-confirm-btn {
+        background: linear-gradient(135deg, var(--accent), #8b6914) !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        font-size: 13px !important;
+        padding: 10px 24px !important;
+        box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3) !important;
+    }
+    .swal2-cancel.premium-cancel-btn {
+        background: var(--bg-tertiary) !important;
+        color: var(--text-secondary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        font-size: 13px !important;
+    }
+    .swal2-toast {
+        border: 1px solid var(--border) !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+    }
+}

@@ -10,20 +10,32 @@ use App\Models\ChartData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Illuminate\Support\Str;
+use App\Models\Client;
+use Illuminate\Support\Facades\Redirect;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Dashboard', [
-            'reports' => Report::latest()->get()
+        $user = $request->user();
+
+        // Superadmin sees all reports, admin sees only their own
+        $query = Report::with(['user:id,name', 'clients:id,name,institution']);
+        if (!$user->isSuperAdmin()) {
+            $query->where('user_id', $user->id);
+        }
+
+        return Inertia::render('Reports/Index', [
+            'reports' => $query->latest()->get(),
+            'canManageAll' => $user->isSuperAdmin(),
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('Reports/Create');
+        return Inertia::render('Reports/Create', [
+            'clients' => Client::where('status', 'Active')->get(['id', 'name', 'institution'])
+        ]);
     }
 
     public function store(Request $request)
@@ -42,10 +54,20 @@ class ReportController extends Controller
             'conclusion_html' => 'nullable|string',
             'stats' => 'array',
             'sections' => 'array',
+            'client_ids' => 'nullable|array',
+            'client_ids.*' => 'exists:t_clients,id',
         ]);
+
+        // Auto-assign current user
+        $validated['user_id'] = $request->user()->id;
 
         DB::transaction(function () use ($validated, $request) {
             $report = Report::create($validated);
+
+            // Handle Client Linking
+            if ($request->has('client_ids')) {
+                $report->clients()->sync($request->input('client_ids'));
+            }
 
             // Handle Stats
             if ($request->has('stats')) {
@@ -81,13 +103,13 @@ class ReportController extends Controller
             }
         });
 
-        return redirect()->route('dashboard')->with('success', 'Report created successfully.');
+        return Redirect::route('dashboard')->with('success', 'Report created successfully.');
     }
 
     public function show($uuid)
     {
         $report = Report::where('uuid', $uuid)
-            ->with(['stats', 'sections.analysis_items', 'sections.charts'])
+            ->with(['user:id,name', 'stats', 'sections.analysis_items', 'sections.charts'])
             ->firstOrFail();
 
         return Inertia::render('Reports/View', [
@@ -95,15 +117,26 @@ class ReportController extends Controller
         ]);
     }
 
-    public function edit(Report $report_admin) // Route model binding uses -admin because of resource name
+    public function edit(Request $request, Report $reports_admin)
     {
+        // Authorization: only owner or superadmin
+        if (!$request->user()->canManageReport($reports_admin)) {
+            abort(403, 'You are not authorized to edit this report.');
+        }
+
         return Inertia::render('Reports/Edit', [
-            'report' => $report_admin->load(['stats', 'sections.analysis_items', 'sections.charts'])
+            'report' => $reports_admin->load(['stats', 'sections.analysis_items', 'sections.charts', 'clients:id']),
+            'clients' => Client::where('status', 'Active')->get(['id', 'name', 'institution'])
         ]);
     }
 
-    public function update(Request $request, Report $report_admin)
+    public function update(Request $request, Report $reports_admin)
     {
+        // Authorization: only owner or superadmin
+        if (!$request->user()->canManageReport($reports_admin)) {
+            abort(403, 'You are not authorized to update this report.');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string',
             'subtitle' => 'nullable|string',
@@ -118,24 +151,37 @@ class ReportController extends Controller
             'conclusion_html' => 'nullable|string',
             'stats' => 'array',
             'sections' => 'array',
+            'client_ids' => 'nullable|array',
+            'client_ids.*' => 'exists:t_clients,id',
         ]);
 
-        DB::transaction(function () use ($validated, $request, $report_admin) {
-            $report_admin->update($validated);
+        DB::transaction(function () use ($validated, $request, $reports_admin) {
+            $reports_admin->update($validated);
+
+            // Handle Client Linking
+            if ($request->has('client_ids')) {
+                $reports_admin->clients()->sync($request->input('client_ids'));
+            }
 
             // Sync Stats (Delete and Recreate for simplicity)
-            $report_admin->stats()->delete();
+            $reports_admin->stats()->delete();
             if ($request->has('stats')) {
                 foreach ($request->input('stats') as $stat) {
-                    $report_admin->stats()->create($stat);
+                    $reports_admin->stats()->create($stat);
                 }
             }
 
             // Sync Sections
-            $report_admin->sections()->delete(); // Warning: This also deletes children via cascade if setup
+            // Cascade delete handles analysis_items and charts via FK constraints
+            $reports_admin->sections()->each(function ($section) {
+                $section->analysis_items()->delete();
+                $section->charts()->delete();
+                $section->delete();
+            });
+
             if ($request->has('sections')) {
                 foreach ($request->input('sections') as $sec) {
-                    $section = $report_admin->sections()->create([
+                    $section = $reports_admin->sections()->create([
                         'section_num' => $sec['section_num'],
                         'title' => $sec['title'],
                         'badge_text' => $sec['badge_text'],
@@ -157,12 +203,17 @@ class ReportController extends Controller
             }
         });
 
-        return redirect()->route('dashboard')->with('success', 'Report updated successfully.');
+        return Redirect::route('dashboard')->with('success', 'Report updated successfully.');
     }
 
-    public function destroy(Report $report_admin)
+    public function destroy(Request $request, Report $reports_admin)
     {
-        $report_admin->delete();
+        // Authorization: only owner or superadmin
+        if (!$request->user()->canManageReport($reports_admin)) {
+            abort(403, 'You are not authorized to delete this report.');
+        }
+
+        $reports_admin->delete();
         return redirect()->route('dashboard')->with('success', 'Report deleted successfully.');
     }
 }

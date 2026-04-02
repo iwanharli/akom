@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use Illuminate\Support\Str;
 
 class Report extends Model
 {
+    protected $table = 't_reports';
     protected $fillable = [
-        'uuid', 'title', 'subtitle', 'alert_text', 'report_date', 'classification', 
+        'uuid', 'user_id', 'title', 'subtitle', 'alert_text', 'report_date', 'classification', 
         'usd_idr_rate', 'brent_oil_price', 'asumsi_icp', 'asumsi_kurs', 'status', 'conclusion_html'
     ];
 
@@ -30,6 +33,11 @@ class Report extends Model
         'brent_oil_price' => 'decimal:2',
     ];
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function stats(): HasMany
     {
         return $this->hasMany(ReportStat::class);
@@ -38,5 +46,10 @@ class Report extends Model
     public function sections(): HasMany
     {
         return $this->hasMany(ReportSection::class);
+    }
+
+    public function clients(): BelongsToMany
+    {
+        return $this->belongsToMany(Client::class, 't_report_client', 'report_id', 'client_id');
     }
 }

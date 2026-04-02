@@ -5,7 +5,8 @@ import { Head } from '@inertiajs/vue3';
 import { defineProps } from 'vue';
 
 const props = defineProps({
-    report: Object
+    report: Object,
+    clients: Array
 });
 </script>
 
@@ -14,14 +15,17 @@ const props = defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-bold leading-tight text-slate-800 dark:text-slate-100">
-                Edit Intelligence Report
-            </h2>
+            <div class="dashboard-header">
+                <div>
+                    <h2 class="page-title">Edit Intelligence Report</h2>
+                    <p class="page-subtitle">Modifying: {{ report.title }}</p>
+                </div>
+            </div>
         </template>
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <ReportForm :report="report" submit-label="Update Report" :is-edit="true" />
+                <ReportForm :report="report" :clients="clients" submit-label="Update Report" :is-edit="true" />
             </div>
         </div>
     </AuthenticatedLayout>

@@ -1,93 +1,80 @@
-# AKOM (Intelligence Reporting System) — High-Fidelity Edition
+# AKOM (Intelligence Reporting System) — Dark Premium Edition
 
 [![Laravel 13](https://img.shields.io/badge/Laravel-13-FF2D20?style=flat-square&logo=laravel)](https://laravel.com)
 [![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?style=flat-square&logo=vue.js)](https://vuejs.org)
-[![Tailwind 4](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql)](https://www.postgresql.org)
+[![Inertia.js](https://img.shields.io/badge/Inertia.js-v1.0-9553E9?style=flat-square)](https://inertiajs.com)
+[![SweetAlert2](https://img.shields.io/badge/Alerts-SweetAlert2-FFAD44?style=flat-square)](https://sweetalert2.github.io)
 
-**AKOM** adalah platform pelaporan intelijen ekonomi *high-fidelity* yang menggabungkan kekuatan backend Laravel 13 dengan fleksibilitas Vue 3 (Inertia.js). Sistem ini dirancang khusus untuk menghasilkan laporan eksekutif premium dengan visualisasi data canggih dan keamanan distribusi berbasis UUID.
+**AKOM** adalah platform pelaporan intelijen ekonomi *corporate-grade* yang dirancang untuk penyajian data strategis dengan estetika **Dark Premium**. Menggabungkan backend Laravel 13 yang kokoh dengan antarmuka Vue 3 yang responsif, AKOM memberikan pengalaman "High-Fidelity Briefing" bagi para pengambil keputusan global.
 
-## ✨ Fitur & Kapabilitas Utama
+## 🎭 Desain & Filosofi: "Tactical Elegance"
 
-### 🕵️ Intelligence Brief Viewer (Public)
-Antarmuka publik yang dirancang dengan estetika "Intelligence Paper" yang sangat detail:
--   **Desain Premium**: Menggunakan palet warna HSL khusus, dark mode elegan, dan tipografi khusus (*Bebas Neue*, *IBM Plex Mono*, *Playfair Display*).
--   **Visualisasi SVG Dinamis**:
-    -   **Oil Price Tracker**: Grafik garis interaktif yang membandingkan realita pasar vs asumsi APBN.
-    -   **Fiscal Stress Bar**: Indikator tekanan defisit dengan sistem pewarnaan gradien dinamis.
-    -   **MBG Evolution**: Grafik batang otomatis yang menunjukkan tren anggaran Badan Gizi Nasional.
--   **UUID Secure Link**: Distribusi laporan menggunakan tautan acak yang aman, memungkinkan stakeholder mengakses tanpa perlu login.
+Sistem ini telah dimodernisasi sepenuhnya dengan filosofi desain **Tactical Elegance**, yang mengedepankan fungsionalitas militer/intelijen dengan kemewahan korporat:
 
-### 🎮 Admin Command Center (Dashboard)
-Sistem manajemen konten tingkat lanjut untuk operasional intelijen:
--   **Full CRUD Suite**: Membuat, mengedit, dan menghapus laporan langsung melalui dashboard.
--   **Dynamic Form Engine**: Form bersarang (*nested forms*) yang memungkinkan Admin menambah/menghapus bab (sections), poin analisis (intel cards/timeline), dan modul statistik secara *real-time*.
--   **Role-Based Access**: Manajemen pengguna dengan level akses Superadmin dan Admin.
+- **Global Dark Theme**: Palet warna *deep charcoal* dan aksen emas (`#C9A227`) yang konsisten di seluruh aplikasi.
+- **Glassmorphism**: Penggunaan *backdrop blur* pada modal, navigasi, dan elemen melayang untuk kedalaman visual yang premium.
+- **Professional Typography**: Perpaduan antara *Source Serif 4* untuk narasi panjang, *Bebas Neue* untuk judul yang kuat, dan *IBM Plex Mono* untuk data teknis.
 
-## 🏗 Struktur Arsitektur & Database
+## ✨ Fitur Utama (V2.0)
+
+### 📊 Intelligence Briefing Layout
+Halaman laporan publik telah dirombak total untuk memberikan pengalaman membaca yang asimetris dan profesional:
+- **Cover Page Hero**: Masthead ala sampul dokumen rahasia dengan efek HUD (*Heads-Up Display*).
+- **Sticky Side-Navigation**: Navigasi struktur laporan yang melayang di sisi kanan untuk aksesibilitas cepat.
+- **Confidential HUD Accents**: Penanda visual "TOP SECRET", stempel "CONFIDENTIAL", dan baris data HUD (Brent, Kurs, Lokasi).
+- **Visualisasi Dinamis**: Grafik SVG (Oil Price, Fiscal Stress, MBG Evolution) yang dianimasikan dengan *Smooth Reveal*.
+
+### 🎮 Administrative Command Center
+Dashboard admin yang telah dimodernisasi untuk efisiensi operasional:
+- **Executive Dashboard Stats**: Grid statistik 5-kolom yang ringkas dan profesional.
+- **Premium Management Modals**: Form manajemen Klien dan User dengan UI yang bersih, *gold focus ring*, dan tipografi yang tegas.
+- **Premium Status Selector**: Pengganti radio button standar dengan *Pill-style Status Selector* yang modern dan jelas.
+- **Centralized Alert Utility**: Integrasi **SweetAlert2** yang dikustomisasi dengan tema gelap (Toast & Modal Konfirmasi).
+
+## 🏗 Struktur Arsitektur
 
 ```mermaid
 graph TD
-    A[Report] --> B[Report Stats]
-    A --> C[Report Sections]
-    C --> D[Analysis Items]
-    C --> E[Chart Data]
-    D --> D1[Timeline]
-    D --> D2[Intel Card]
-    D --> D3[Fact List]
-    E --> E1[Oil Price SVG]
-    E --> E2[MBG Evolution SVG]
-    E --> E3[Fiscal Stress SVG]
+    A[Public Briefing] --> B[Asymmetric Layout]
+    A --> C[Floating Sidebar]
+    D[Admin Dashboard] --> E[Report Engine]
+    D --> F[Management Suite]
+    E --> G[Premium Form Editor]
+    F --> H[Client & User Modals]
+    G --> I[Pill Status Toggle]
 ```
 
 ## 🛠 Tech Stack
 
--   **Backend**: Laravel 13 (Modern PHP 8.3+)
--   **Frontend**: Vue 3 + Inertia.js (Modern Monolith Approach)
--   **Styling**: Vanilla CSS + Tailwind CSS v4
--   **Database**: PostgreSQL
--   **Animations**: Intersection Observer + CSS Fade-ins
+- **Backend**: Laravel 13 (PHP 8.3+)
+- **Frontend**: Vue 3 + Inertia.js
+- **Styling**: Vanilla CSS + Tailwind v4 (Design Tokens)
+- **Modals & Alerts**: SweetAlert2 (Premium Dark Themed)
+- **Visuals**: SVG Dynamic Charting + Sanitize-HTML
 
-## 🚀 Panduan Instalasi Cepat
+## 🚀 Instalasi & Setup
 
-1.  **Persiapan Repositori**:
-    ```bash
-    git clone https://github.com/iwanharli/akom.git
-    cd akom
-    ```
+1. **Clone & Install**:
+   ```bash
+   git clone https://github.com/iwanharli/akom.git
+   cd akom
+   composer install
+   npm install
+   ```
 
-2.  **Manajemen Dependensi**:
-    ```bash
-    composer install
-    npm install
-    ```
+2. **Environment**:
+   Sesuaikan `.env` untuk PostgreSQL Anda.
 
-3.  **Pengaturan Environment**:
-    Konfigurasikan `.env` untuk PostgreSQL:
-    ```env
-    DB_CONNECTION=pgsql
-    DB_DATABASE=db_akom
-    DB_USERNAME=postgres
-    DB_PASSWORD=your_password
-    ```
+3. **Database Setup**:
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
 
-4.  **Inisialisasi Database (PENTING)**:
-    Jalankan migrasi dan seeder untuk mendapatkan contoh laporan "Di Tepi Badai":
-    ```bash
-    php artisan migrate:fresh --seed
-    ```
-
-5.  **Kompilasi Visual & Server**:
-    ```bash
-    npm run build
-    php artisan serve
-    ```
-
-## 🔐 Akses Default
-
--   **Login URL**: `/login`
--   **Default Password**: `password`
--   **User**: `superadmin@example.com` (Superadmin) / `admin@example.com` (Admin)
+4. **Run Server**:
+   ```bash
+   npm run dev
+   php artisan serve
+   ```
 
 ---
-© 2026 AKOM Intelligence. Build for high-fidelity reporting.
+© 2026 AKOM Intelligence. Engineered for high-fidelity strategic analysis.

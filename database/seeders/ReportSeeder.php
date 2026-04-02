@@ -19,6 +19,7 @@ class ReportSeeder extends Seeder
     {
         $report = new Report();
         $report->fill([
+            'user_id' => 1, // superadmin
             'title' => 'DI TEPI <em>BADAI</em><br>EKONOMI INDONESIA',
             'subtitle' => 'Konflik Iran–AS–Israel, Krisis Energi, APBN di Persimpangan, dan Taruhan Politik Prabowo',
             'alert_text' => '<strong>SIAGA FISKAL:</strong> Harga minyak Brent telah melampaui asumsi APBN 2026 sebesar <strong>40–48%</strong> pasca-serangan AS–Israel ke Iran (28 Feb 2026). Selat Hormuz hampir sepenuhnya tertutup. Rupiah tertekan mendekati Rp17.000–17.019/USD, jauh dari asumsi Rp16.500. Defisit APBN berpotensi melebar ke <strong>Rp1.044 triliun (4,06% PDB)</strong> — melampaui batas hukum 3%.',
@@ -79,15 +80,43 @@ class ReportSeeder extends Seeder
             AnalysisItem::create(['section_id' => $sec1->id, 'item_type' => $i['type'], 'event_date' => $i['date'], 'heading' => $i['head'], 'body' => $i['body']]);
         }
 
-        ChartData::create(['section_id' => $sec1->id, 'chart_type' => 'line_oil', 'json_payload' => []]);
+        // ═══ DYNAMIC LINE OIL CHART ═══
+        ChartData::create([
+            'section_id' => $sec1->id,
+            'chart_type' => 'line_oil',
+            'json_payload' => [
+                'title' => 'PERBANDINGAN ASUMSI VS REALITA HARGA BRENT (USD/bbl)',
+                'y_range' => ['min' => 40, 'max' => 120],
+                'y_step' => 20,
+                'asumsi_line' => ['value' => 70, 'label' => 'APBN $70'],
+                'data_points' => [
+                    ['label' => 'Jan', 'value' => 70],
+                    ['label' => 'Feb', 'value' => 71],
+                    ['label' => 'Mar', 'value' => 71],
+                    ['label' => 'Apr', 'value' => 86],
+                    ['label' => 'Mei', 'value' => 95],
+                    ['label' => 'Jun', 'value' => 104],
+                    ['label' => 'Jul', 'value' => 100],
+                    ['label' => 'Agt', 'value' => 95],
+                    ['label' => 'Sep', 'value' => 90],
+                    ['label' => 'Okt', 'value' => 87],
+                ],
+            ],
+        ]);
+
+        // ═══ DYNAMIC FISCAL STRESS ═══
         ChartData::create([
             'section_id' => $sec1->id,
             'chart_type' => 'fiscal_stress',
             'json_payload' => [
-                ['name' => 'Defisit Ditetapkan', 'label' => 'Rp689T · 2,68% PDB', 'width' => '66%', 'color' => '#2ecc71', 'gradient' => 'linear-gradient(90deg,#2ecc71,#27ae60)'],
-                ['name' => 'Skenario Moderat', 'label' => '~Rp866T · 3,4–3,6% PDB', 'width' => '83%', 'color' => '#e67e22', 'gradient' => 'linear-gradient(90deg,#e67e22,#d35400)'],
-                ['name' => 'Skenario Terburuk', 'label' => 'Rp1.044T · 4,06% PDB 🚨', 'width' => '100%', 'color' => '#e74c3c', 'gradient' => 'linear-gradient(90deg,#e74c3c,#c0392b)'],
-            ]
+                'title' => 'SKENARIO TEKANAN DEFISIT APBN 2026',
+                'batas_marker' => ['position' => '72.7%', 'label' => 'Batas 3%'],
+                'scenarios' => [
+                    ['name' => 'Defisit Ditetapkan', 'label' => 'Rp689T · 2,68% PDB', 'width' => '66%', 'color' => '#2ecc71', 'gradient' => 'linear-gradient(90deg,#2ecc71,#27ae60)'],
+                    ['name' => 'Skenario Moderat', 'label' => '~Rp866T · 3,4–3,6% PDB', 'width' => '83%', 'color' => '#e67e22', 'gradient' => 'linear-gradient(90deg,#e67e22,#d35400)'],
+                    ['name' => 'Skenario Terburuk', 'label' => 'Rp1.044T · 4,06% PDB 🚨', 'width' => '100%', 'color' => '#e74c3c', 'gradient' => 'linear-gradient(90deg,#e74c3c,#c0392b)'],
+                ],
+            ],
         ]);
 
         // ════════ SECTION 2 ════════
@@ -133,6 +162,20 @@ class ReportSeeder extends Seeder
             AnalysisItem::create(['section_id' => $sec3->id, 'item_type' => 'intel_card', 'tag' => $i['tag'], 'heading' => $i['head'], 'body' => $i['body']]);
         }
 
-        ChartData::create(['section_id' => $sec3->id, 'chart_type' => 'mbg_evolution', 'json_payload' => []]);
+        // ═══ DYNAMIC MBG EVOLUTION CHART ═══
+        ChartData::create([
+            'section_id' => $sec3->id,
+            'chart_type' => 'mbg_evolution',
+            'json_payload' => [
+                'title' => 'ESKALASI ANGGARAN MBG (TRILIUN RUPIAH)',
+                'bars' => [
+                    ['label' => 'APBN 2025', 'sub_label' => 'Awal', 'value_label' => 'Rp71T', 'color' => '#e8a020', 'opacity' => 0.7, 'height_pct' => 24],
+                    ['label' => 'APBN 2025', 'sub_label' => '+Tambahan', 'value_label' => 'Rp171T', 'color' => '#e8a020', 'opacity' => 0.8, 'height_pct' => 51],
+                    ['label' => 'KEM-PPKF', 'sub_label' => '2026 Usulan', 'value_label' => 'Rp217T', 'color' => '#e67e22', 'opacity' => 0.8, 'height_pct' => 64],
+                    ['label' => 'APBN 2026', 'sub_label' => 'FINAL (+53,8%)', 'value_label' => 'Rp335T', 'color' => '#e74c3c', 'opacity' => 1.0, 'height_pct' => 100],
+                ],
+                'callout' => ['text' => '+371%', 'sub_text' => 'dalam 1 tahun'],
+            ],
+        ]);
     }
 }

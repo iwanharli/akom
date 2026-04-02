@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ReportSection extends Model
 {
+    protected $table = 't_report_sections';
     protected $fillable = [
         'report_id', 'section_num', 'title', 'badge_text', 'content_html'
     ];

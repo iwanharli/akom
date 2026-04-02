@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('t_reports', function (Blueprint $table) {
-            $table->text('alert_text')->nullable()->after('subtitle');
-            $table->decimal('asumsi_icp', 15, 2)->nullable()->after('brent_oil_price');
-            $table->decimal('asumsi_kurs', 15, 2)->nullable()->after('asumsi_icp');
+            $table->foreignId('user_id')->nullable()->after('id')->constrained('users')->onDelete('set null');
         });
     }
 
@@ -24,7 +22,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('t_reports', function (Blueprint $table) {
-            $table->dropColumn(['alert_text', 'asumsi_icp', 'asumsi_kurs']);
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
 };

@@ -33,68 +33,111 @@ const submit = () => {
     <GuestLayout>
         <Head title="Log in" />
 
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+        <div class="mb-6 text-center">
+            <h1 class="text-2xl font-bold text-white mb-2">Secure Access.</h1>
+            <p class="text-sm text-gray-400">Please enter your credentials to access the intelligence portal.</p>
+        </div>
+
+        <div v-if="status" class="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-sm font-medium text-green-400">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="space-y-6">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Email Address" class="text-gray-300 mb-1.5 ml-1" />
 
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="block w-full auth-input"
                     v-model="form.email"
                     required
                     autofocus
                     autocomplete="username"
+                    placeholder="name@institution.gov"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+            <div>
+                <div class="flex items-center justify-between mb-1.5 ml-1">
+                    <InputLabel for="password" value="Password" class="text-gray-300" />
+                    <Link
+                        v-if="canResetPassword"
+                        :href="route('password.request')"
+                        class="text-xs text-[#c9a227] hover:text-[#e5bf45] transition-colors"
+                    >
+                        Forgot password?
+                    </Link>
+                </div>
 
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="block w-full auth-input"
                     v-model="form.password"
                     required
                     autocomplete="current-password"
+                    placeholder="••••••••"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4 block">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400"
-                        >Remember me</span
-                    >
-                </label>
+            <div class="flex items-center">
+                <Checkbox name="remember" v-model:checked="form.remember" class="auth-checkbox" />
+                <span class="ms-2 text-sm text-gray-400">Remember this device</span>
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                >
-                    Forgot your password?
-                </Link>
-
+            <div class="pt-2">
                 <PrimaryButton
-                    class="ms-4"
+                    class="w-full btn-premium"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Log in
+                    Sign In
                 </PrimaryButton>
             </div>
         </form>
     </GuestLayout>
 </template>
+
+<style scoped>
+:deep(.auth-input) {
+    background: rgba(13, 17, 23, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: white !important;
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    transition: all 0.2s !important;
+}
+:deep(.auth-input:focus) {
+    border-color: #c9a227 !important;
+    box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.15) !important;
+}
+
+.btn-premium {
+    background: linear-gradient(135deg, #c9a227, #8b6914) !important;
+    color: white !important;
+    height: 48px;
+    justify-content: center;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 13px !important;
+    box-shadow: 0 4px 12px rgba(201, 162, 39, 0.2) !important;
+}
+.btn-premium:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(201, 162, 39, 0.3) !important;
+}
+
+:deep(.auth-checkbox) {
+    background: rgba(13, 17, 23, 0.8) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #c9a227 !important;
+    border-radius: 4px !important;
+}
+</style>

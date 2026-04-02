@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('t_chart_data', function (Blueprint $table) {
+        Schema::create('t_clients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('section_id')->constrained('t_report_sections')->onDelete('cascade');
-            $table->enum('chart_type', ['line_oil', 'bar_budget', 'fiscal_stress', 'mbg_evolution'])->default('line_oil');
-            $table->json('json_payload')->nullable();
+            $table->string('name');
+            $table->string('institution')->nullable();
+            $table->string('email')->nullable();
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('t_chart_data');
+        Schema::dropIfExists('t_clients');
     }
 };
