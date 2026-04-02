@@ -1,74 +1,93 @@
-# AKOM (Intelligence Reporting System)
+# AKOM (Intelligence Reporting System) — High-Fidelity Edition
 
 [![Laravel 13](https://img.shields.io/badge/Laravel-13-FF2D20?style=flat-square&logo=laravel)](https://laravel.com)
 [![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?style=flat-square&logo=vue.js)](https://vuejs.org)
 [![Tailwind 4](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql)](https://www.postgresql.org)
 
-**AKOM** adalah sistem pelaporan intelijen ekonomi premium yang dirancang untuk menghasilkan ringkasan eksekutif (whitepaper) dengan visualisasi data tingkat tinggi dan sistem distribusi tautan unik yang aman.
+**AKOM** adalah platform pelaporan intelijen ekonomi *high-fidelity* yang menggabungkan kekuatan backend Laravel 13 dengan fleksibilitas Vue 3 (Inertia.js). Sistem ini dirancang khusus untuk menghasilkan laporan eksekutif premium dengan visualisasi data canggih dan keamanan distribusi berbasis UUID.
 
-## ✨ Fitur Utama
+## ✨ Fitur & Kapabilitas Utama
 
--   **Intelligence Brief UI**: Tampilan laporan dengan estetika "Top Secret" yang premium, tipografi tajam, dan visualisasi data SVG kustom.
--   **Sistem Link Unik (UUID)**: Setiap laporan memiliki tautan acak yang aman untuk dibagikan tanpa perlu login publik.
--   **Admin Command Center**: Dashboard lengkap untuk mengelola laporan (CRUD) dengan input data dinamis untuk bab-bab laporan, poin analisis, dan statistik.
--   **Role-Based Access Control (RBAC)**: Sistem manajemen user dengan peran Superadmin dan Admin.
--   **Visualisasi Dinamis**: Modul grafik SVG otomatis untuk harga komoditas (Brent Oil) dan bar tekanan fiskal (APBN Stress Test).
+### 🕵️ Intelligence Brief Viewer (Public)
+Antarmuka publik yang dirancang dengan estetika "Intelligence Paper" yang sangat detail:
+-   **Desain Premium**: Menggunakan palet warna HSL khusus, dark mode elegan, dan tipografi khusus (*Bebas Neue*, *IBM Plex Mono*, *Playfair Display*).
+-   **Visualisasi SVG Dinamis**:
+    -   **Oil Price Tracker**: Grafik garis interaktif yang membandingkan realita pasar vs asumsi APBN.
+    -   **Fiscal Stress Bar**: Indikator tekanan defisit dengan sistem pewarnaan gradien dinamis.
+    -   **MBG Evolution**: Grafik batang otomatis yang menunjukkan tren anggaran Badan Gizi Nasional.
+-   **UUID Secure Link**: Distribusi laporan menggunakan tautan acak yang aman, memungkinkan stakeholder mengakses tanpa perlu login.
+
+### 🎮 Admin Command Center (Dashboard)
+Sistem manajemen konten tingkat lanjut untuk operasional intelijen:
+-   **Full CRUD Suite**: Membuat, mengedit, dan menghapus laporan langsung melalui dashboard.
+-   **Dynamic Form Engine**: Form bersarang (*nested forms*) yang memungkinkan Admin menambah/menghapus bab (sections), poin analisis (intel cards/timeline), dan modul statistik secara *real-time*.
+-   **Role-Based Access**: Manajemen pengguna dengan level akses Superadmin dan Admin.
+
+## 🏗 Struktur Arsitektur & Database
+
+```mermaid
+graph TD
+    A[Report] --> B[Report Stats]
+    A --> C[Report Sections]
+    C --> D[Analysis Items]
+    C --> E[Chart Data]
+    D --> D1[Timeline]
+    D --> D2[Intel Card]
+    D --> D3[Fact List]
+    E --> E1[Oil Price SVG]
+    E --> E2[MBG Evolution SVG]
+    E --> E3[Fiscal Stress SVG]
+```
 
 ## 🛠 Tech Stack
 
--   **Backend**: Laravel 13 (PHP 8.4+)
--   **Frontend**: Vue 3 + Inertia.js (Modern Monolith)
--   **Styling**: Tailwind CSS v4
+-   **Backend**: Laravel 13 (Modern PHP 8.3+)
+-   **Frontend**: Vue 3 + Inertia.js (Modern Monolith Approach)
+-   **Styling**: Vanilla CSS + Tailwind CSS v4
 -   **Database**: PostgreSQL
--   **State Management**: Vue Composition API + Inertia Forms
+-   **Animations**: Intersection Observer + CSS Fade-ins
 
-## 🚀 Instalasi
+## 🚀 Panduan Instalasi Cepat
 
-1.  **Kloning repositori**:
+1.  **Persiapan Repositori**:
     ```bash
     git clone https://github.com/iwanharli/akom.git
     cd akom
     ```
 
-2.  **Instansi Dependensi**:
+2.  **Manajemen Dependensi**:
     ```bash
     composer install
     npm install
     ```
 
-3.  **Konfigurasi Database**:
-    Salin `.env.example` ke `.env` dan sesuaikan kredensial PostgreSQL Anda:
+3.  **Pengaturan Environment**:
+    Konfigurasikan `.env` untuk PostgreSQL:
     ```env
     DB_CONNECTION=pgsql
-    DB_HOST=127.0.0.1
-    DB_PORT=5432
     DB_DATABASE=db_akom
     DB_USERNAME=postgres
-    DB_PASSWORD=
+    DB_PASSWORD=your_password
     ```
 
-4.  **Migrasi & Seed**:
+4.  **Inisialisasi Database (PENTING)**:
+    Jalankan migrasi dan seeder untuk mendapatkan contoh laporan "Di Tepi Badai":
     ```bash
     php artisan migrate:fresh --seed
     ```
 
-5.  **Kompilasi Asset**:
+5.  **Kompilasi Visual & Server**:
     ```bash
-    npm run dev
-    # atau untuk produksi
     npm run build
-    ```
-
-6.  **Jalankan Server**:
-    ```bash
     php artisan serve
     ```
 
-## 🔐 Akun Demo (Default)
+## 🔐 Akses Default
 
--   **Superadmin**: `superadmin@example.com` (password: `password`)
--   **Admin**: `admin@example.com` (password: `password`)
+-   **Login URL**: `/login`
+-   **Default Password**: `password`
+-   **User**: `superadmin@example.com` (Superadmin) / `admin@example.com` (Admin)
 
-## 📜 Lisensi
-© 2026 Intelligence Reporting System. All rights reserved.
+---
+© 2026 AKOM Intelligence. Build for high-fidelity reporting.
