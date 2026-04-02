@@ -11,7 +11,7 @@ class Report extends Model
 {
     protected $fillable = [
         'uuid', 'title', 'subtitle', 'alert_text', 'report_date', 'classification', 
-        'usd_idr_rate', 'brent_oil_price', 'asumsi_icp', 'asumsi_kurs', 'status'
+        'usd_idr_rate', 'brent_oil_price', 'asumsi_icp', 'asumsi_kurs', 'status', 'conclusion_html'
     ];
 
     /**

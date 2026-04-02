@@ -27,6 +27,7 @@ const form = useForm({
     asumsi_icp: props.report.asumsi_icp || 70,
     asumsi_kurs: props.report.asumsi_kurs || 16500,
     status: props.report.status || 'Draft',
+    conclusion_html: props.report.conclusion_html || '',
     stats: props.report.stats || [],
     sections: props.report.sections || []
 });
@@ -232,6 +233,14 @@ const submit = () => {
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- CONCLUSION -->
+        <section class="bg-white dark:bg-slate-900 shadow sm:rounded-lg p-6 space-y-4">
+            <h3 class="text-lg font-bold border-b border-slate-100 dark:border-slate-800 pb-3 text-slate-800 dark:text-white uppercase tracking-wider">
+                4. Final Conclusion (HTML Allowed)
+            </h3>
+            <textarea v-model="form.conclusion_html" rows="6" class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-indigo-500 text-sm" placeholder="Write final summary..."></textarea>
         </section>
 
         <!-- SUBMIT -->

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('chart_data', function (Blueprint $table) {
             $table->id();
             $table->foreignId('section_id')->constrained('report_sections')->onDelete('cascade');
-            $table->enum('chart_type', ['line_oil', 'bar_budget', 'fiscal_stress'])->default('line_oil');
+            $table->enum('chart_type', ['line_oil', 'bar_budget', 'fiscal_stress', 'mbg_evolution'])->default('line_oil');
             $table->json('json_payload')->nullable();
             $table->timestamps();
         });

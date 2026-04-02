@@ -17,7 +17,7 @@ class ReportSection extends Model
         return $this->belongsTo(Report::class);
     }
 
-    public function analysisItems(): HasMany
+    public function analysis_items(): HasMany
     {
         return $this->hasMany(AnalysisItem::class, 'section_id');
     }

@@ -39,6 +39,7 @@ class ReportController extends Controller
             'asumsi_icp' => 'nullable|numeric',
             'asumsi_kurs' => 'nullable|numeric',
             'status' => 'required|in:Draft,Published,Archived',
+            'conclusion_html' => 'nullable|string',
             'stats' => 'array',
             'sections' => 'array',
         ]);
@@ -114,6 +115,7 @@ class ReportController extends Controller
             'asumsi_icp' => 'nullable|numeric',
             'asumsi_kurs' => 'nullable|numeric',
             'status' => 'required|in:Draft,Published,Archived',
+            'conclusion_html' => 'nullable|string',
             'stats' => 'array',
             'sections' => 'array',
         ]);

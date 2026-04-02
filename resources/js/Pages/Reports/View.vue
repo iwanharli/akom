@@ -19,8 +19,8 @@ const getBadgeClass = (badge) => {
     if (!badge) return 'badge-intel';
     const text = badge.toLowerCase();
     if (text.includes('analisa')) return 'badge-analysis';
-    if (text.includes('intel')) return 'badge-intel';
     if (text.includes('situasi')) return 'badge-danger';
+    if (text.includes('intel')) return 'badge-intel';
     return 'badge-intel';
 };
 
@@ -100,9 +100,9 @@ onMounted(() => {
 
                     <!-- TWO COLUMN LAYOUT FOR ITEMS -->
                     <div v-if="section.analysis_items?.length" class="two-col mt-8">
-                        <!-- Left or Single Col: Timeline/Intel -->
+                        <!-- Timeline -->
                         <div class="geo-card" v-if="section.analysis_items.some(i => i.item_type === 'timeline')">
-                            <div class="geo-card-title">↯ TIMELINE ANALISIS</div>
+                            <div class="geo-card-title">↯ TIMELINE ESKALASI</div>
                             <div class="timeline">
                                 <div v-for="item in section.analysis_items.filter(i => i.item_type === 'timeline')" :key="item.id" class="tl-item">
                                     <div class="tl-date">{{ item.event_date }}</div>
@@ -111,19 +111,21 @@ onMounted(() => {
                             </div>
                         </div>
 
-                        <div class="intel-grid" v-if="section.analysis_items.some(i => i.item_type === 'intel_card')">
-                            <div v-for="item in section.analysis_items.filter(i => i.item_type === 'intel_card')" :key="item.id" class="intel-card">
-                                <div class="intel-card-tag">{{ item.tag }}</div>
-                                <h4>{{ item.heading }}</h4>
-                                <p v-html="item.body"></p>
-                            </div>
-                        </div>
-
+                        <!-- Fact List -->
                         <div class="geo-card" v-if="section.analysis_items.some(i => i.item_type === 'fact_list')">
-                            <div class="geo-card-title">🔍 KEY DATA POINTS</div>
+                            <div class="geo-card-title">🇮🇩 DATA KERENTANAN</div>
                             <ul class="fact-list">
-                                <li v-for="item in section.analysis_items.filter(i => i.item_type === 'fact_list')" :key="item.id" v-html="item.heading + ': ' + (item.body || '')"></li>
+                                <li v-for="item in section.analysis_items.filter(i => i.item_type === 'fact_list')" :key="item.id" v-html="item.body"></li>
                             </ul>
+                        </div>
+                    </div>
+
+                    <!-- INTEL GRID (full width if not in two-col) -->
+                    <div class="intel-grid mt-8" v-if="section.analysis_items.some(i => i.item_type === 'intel_card')">
+                        <div v-for="item in section.analysis_items.filter(i => i.item_type === 'intel_card')" :key="item.id" class="intel-card">
+                            <div class="intel-card-tag">{{ item.tag }}</div>
+                            <h4>{{ item.heading }}</h4>
+                            <p v-html="item.body"></p>
                         </div>
                     </div>
 
@@ -174,13 +176,46 @@ onMounted(() => {
                                 </div>
                             </div>
                         </div>
+
+                        <!-- MBG EVOLUTION BAR CHART -->
+                        <div v-if="chart.chart_type === 'mbg_evolution'" class="chart-container fade-in">
+                            <div class="chart-title">ESKALASI ANGGARAN MBG (TRILIUN RUPIAH)</div>
+                            <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;overflow:visible">
+                                <rect x="80" y="108" width="70" height="32" fill="#e8a020" opacity="0.7" rx="2"></rect>
+                                <text x="115" y="104" fill="#e8a020" font-size="10" text-anchor="middle" font-weight="600">Rp71T</text>
+                                <text x="115" y="148" fill="#7a8090" font-size="9" text-anchor="middle">APBN 2025</text>
+                                <text x="115" y="158" fill="#7a8090" font-size="8" text-anchor="middle">Awal</text>
+
+                                <rect x="200" y="72" width="70" height="68" fill="#e8a020" opacity="0.8" rx="2"></rect>
+                                <text x="235" y="68" fill="#e8a020" font-size="10" text-anchor="middle" font-weight="600">Rp171T</text>
+                                <text x="235" y="148" fill="#7a8090" font-size="9" text-anchor="middle">APBN 2025</text>
+                                <text x="235" y="158" fill="#7a8090" font-size="8" text-anchor="middle">+Tambahan</text>
+
+                                <rect x="320" y="54" width="70" height="86" fill="#e67e22" opacity="0.8" rx="2"></rect>
+                                <text x="355" y="50" fill="#e67e22" font-size="10" text-anchor="middle" font-weight="600">Rp217T</text>
+                                <text x="355" y="148" fill="#7a8090" font-size="9" text-anchor="middle">KEM-PPKF</text>
+                                <text x="355" y="158" fill="#7a8090" font-size="8" text-anchor="middle">2026 Usulan</text>
+
+                                <rect x="440" y="6" width="70" height="134" fill="#e74c3c" rx="2"></rect>
+                                <text x="475" y="18" fill="#fff" font-size="11" text-anchor="middle" font-weight="600">Rp335T</text>
+                                <text x="475" y="148" fill="#e74c3c" font-size="9" text-anchor="middle" font-weight="600">APBN 2026</text>
+                                <text x="475" y="158" fill="#e74c3c" font-size="8" text-anchor="middle">FINAL (+53,8%)</text>
+
+                                <line x1="60" y1="140" x2="680" y2="140" stroke="#1e2530" stroke-width="1"></line>
+                                <text x="570" y="95" fill="#e74c3c" font-size="16" text-anchor="middle" font-weight="bold">+371%</text>
+                                <text x="570" y="108" fill="#7a8090" font-size="9" text-anchor="middle">dalam 1 tahun</text>
+                            </svg>
+                        </div>
                     </template>
                 </section>
                 <div class="sep"></div>
             </template>
 
-            <!-- CONCLUSION Placeholder if needed or handle via section -->
-            
+            <!-- CONCLUSION BOX -->
+            <div v-if="report.conclusion_html" class="conclusion fade-in">
+                <div class="conclusion-title">✦ KESIMPULAN ANALISA INTELIJEN ✦</div>
+                <div class="prose" v-html="report.conclusion_html"></div>
+            </div>
         </main>
 
         <footer class="container">
@@ -418,6 +453,69 @@ onMounted(() => {
     margin-bottom: 20px;
 }
 
+/* ─── TABLES ─── */
+:deep(.scenario-table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+}
+:deep(.scenario-table th) {
+    background: var(--border);
+    color: var(--text-dim);
+    text-transform: uppercase;
+    padding: 12px;
+    text-align: left;
+}
+:deep(.scenario-table td) {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+}
+:deep(.status-danger) { color: var(--red); font-weight: bold; }
+:deep(.status-warn) { color: var(--orange); font-weight: bold; }
+:deep(.status-ok) { color: var(--green); font-weight: bold; }
+
+/* ─── QUOTES ─── */
+:deep(.quote-block) {
+    margin: 32px 0;
+    padding: 24px;
+    background: var(--surface);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+}
+:deep(.quote-text) {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+}
+:deep(.quote-attr) {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+/* ─── CONCLUSION ─── */
+.conclusion {
+    background: linear-gradient(135deg, var(--surface2), var(--bg));
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 40px;
+    margin: 60px 0;
+    position: relative;
+}
+.conclusion-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 24px;
+    letter-spacing: 4px;
+}
+
 /* ─── DUAL COLUMN ─── */
 .two-col {
     display: grid;
@@ -545,6 +643,18 @@ onMounted(() => {
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 3px;
+}
+
+/* ─── HIGHLIGHT BOX ─── */
+:deep(.highlight) {
+    padding: 24px;
+    background: rgba(46,204,113,0.05);
+    border: 1px solid rgba(46,204,113,0.3);
+    border-radius: 8px;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-bright);
+    margin: 32px 0;
 }
 
 /* ─── INTEL ANALYSIS CARDS ─── */
